@@ -32,8 +32,9 @@ def met_artworks():
 # Create and run dlt pipeline
 # TODO: Include Airflow logging like here: https://dlthub.com/docs/general-usage/pipeline
 pipeline = dlt.pipeline(
-    destination="duckdb",
+    destination="filesystem",
+    dataset_name="met_museum_data", # TODO: use env var
     progress=dlt.progress.log(60) # Log progress every 60s
 )
-load_info = pipeline.run(met_artworks, write_disposition="replace")
+load_info = pipeline.run(met_artworks, write_disposition="replace", loader_file_format="parquet")
 print(load_info)

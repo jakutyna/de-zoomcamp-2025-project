@@ -175,3 +175,7 @@ cython_debug/
 
 # Secrets
 secrets.toml
+
+# Terraform
+.terraform*
+*tfstate*

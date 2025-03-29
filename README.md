@@ -33,5 +33,5 @@ Required environment variables:
 # Testing steps
 
 - `terraform -chdir=de-zoomcamp-2025-project/terraform apply`
-- `python dlt/es
+- `python dlt/extract_to_gcs.py
 - `terraform -chdir=de-zoomcamp-2025-project/terraform destroy`

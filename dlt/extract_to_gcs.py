@@ -1,10 +1,28 @@
+import os
 from datetime import date, timedelta
 
 import dlt
 from dlt.sources.helpers.rest_client import RESTClient
 
+# Set up secrects
+private_key_unescaped = (
+    os.environ.get("GCP_PRIVATE_KEY")
+    .encode("raw_unicode_escape")
+    .decode("unicode_escape")
+)
+dlt.secrets["destination.filesystem.bucket_url"] = "gs://"+ os.environ.get(
+    "GCS_BUCKET_NAME"
+)
+dlt.secrets["destination.filesystem.credentials.project_id"] = os.environ.get(
+    "GCP_PROJECT_ID"
+)
+dlt.secrets["destination.filesystem.credentials.private_key"] = private_key_unescaped
+dlt.secrets["destination.filesystem.credentials.client_email"] = os.environ.get(
+    "GCP_CLIENT_EMAIL"
+)
+dataset_name = os.environ.get("BQ_DATASET_NAME")
 
-DAYS_OFFSET = 1 # TODO: change to 14 default
+DAYS_OFFSET = 1  # TODO: change to 14 default
 metadata_date = date.today() - timedelta(days=DAYS_OFFSET)
 
 # Define the API resource for Metropolitan Museum data
@@ -16,7 +34,7 @@ def met_artworks():
     )
     # Pull ids of most recent museum objects
     response = client.get("/objects", params={"metadataDate": metadata_date})
-    object_ids = response.json()["objectIDs"][:100] # TODO: REMOVE SLICE AFTER TESTING
+    object_ids = response.json()["objectIDs"][:100]  # TODO: REMOVE SLICE AFTER TESTING
 
     # TODO: Add logger
     print(f"Pulled ids of {len(object_ids)} museum artworks.")
@@ -24,6 +42,7 @@ def met_artworks():
     # Pull data for each object from object_ids list
     for page in object_ids:
         yield client.get("/objects/" + str(page)).json()
+
 
 # # For testing
 # for i in met_artworks:
@@ -33,8 +52,9 @@ def met_artworks():
 # TODO: Include Airflow logging like here: https://dlthub.com/docs/general-usage/pipeline
 pipeline = dlt.pipeline(
     destination="filesystem",
-    dataset_name="met_museum_data", # TODO: use env var
-    progress=dlt.progress.log(60) # Log progress every 60s
+    dataset_name=dataset_name,  # TODO: use env var
+    progress=dlt.progress.log(60),  # Log progress every 60s
 )
-load_info = pipeline.run(met_artworks, write_disposition="replace", loader_file_format="parquet")
-print(load_info)
+load_info = pipeline.run(
+    met_artworks, write_disposition="replace", loader_file_format="parquet"
+)

@@ -1,4 +1,5 @@
 # dlt[duckdb] #for testing
 # dlt[filesystem] # including GCS
+black
 dlt[gs]
 dlt[parquet]

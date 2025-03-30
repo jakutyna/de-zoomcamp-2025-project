@@ -21,6 +21,9 @@ Setting up project environment on GCP:
 export GOOGLE_APPLICATION_CREDENTIALS=<path-to-JSON-file>
 ````
 
+### DBT
+
+- dbt_external_tables package is used to create external tables in BQ (https://hub.getdbt.com/dbt-labs/dbt_external_tables/latest/)
 
 
 Required environment variables:

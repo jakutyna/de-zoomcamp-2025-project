@@ -175,6 +175,7 @@ cython_debug/
 
 # Secrets
 secrets.toml
+gcp_credentials
 
 # Terraform
 .terraform*

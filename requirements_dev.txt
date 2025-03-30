@@ -1,0 +1,3 @@
+# dlt[duckdb] #for testing
+black
+ipykernel #for testing in Jupyter

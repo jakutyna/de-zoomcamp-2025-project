@@ -1,7 +1,4 @@
-# dlt[duckdb] #for testing
-black
 dbt-core
 dbt-bigquery
 dlt[gs]
 dlt[parquet]
-ipykernel #for testing in Jupyter

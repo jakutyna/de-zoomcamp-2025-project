@@ -15,11 +15,31 @@ Setting up project environment on GCP:
     - Create a JSON service account key ([https://cloud.google.com/iam/docs/keys-create-delete](https://cloud.google.com/iam/docs/keys-create-delete#iam-service-account-keys-create-console))
     - Store a downloaded JSON file in the location of your choice
     - Set an environment variable with a path to your JSON key file
-- run bash script (??????) to extract env vars from your JSON file or set them up manually:
 
 ```sh
 export GOOGLE_APPLICATION_CREDENTIALS=<path-to-JSON-file>
-````
+```
+
+- run bash script to copy JSON key file to repo directory (or copy it manually)
+- run bash script (??????) to extract env vars from your JSON file or set them up manually:
+
+### Airflow
+
+- airflow docker-compose.yaml and Dockerfile were created following this: ([Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html))
+
+
+```sh
+docker compose build
+```
+
+
+```sh
+docker compose up airflow-init
+```
+
+```sh
+docker compose up
+```
 
 ### DBT
 

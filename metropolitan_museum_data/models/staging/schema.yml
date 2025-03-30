@@ -16,14 +16,7 @@ sources:
             uris: ["gs://{{ env_var('GCS_BUCKET_NAME') }}/{{ env_var('BQ_DATASET_NAME') }}/met_artworks/*"]
 
 
-        # Specify ALL column names + datatypes.
-        # Column order must match for CSVs, column names must match for other formats.
-        # Some databases support schema inference.
-
-        # columns:
-        #   - name: object_id
-        #     data_type: INT
-        #     description: "Artwork ID"
-        #   - name: is_highlight
-        #     data_type: BOOL
-
+models:
+    - name: stg_met_data
+      description: >
+        Model with raw metropolitan museum data.

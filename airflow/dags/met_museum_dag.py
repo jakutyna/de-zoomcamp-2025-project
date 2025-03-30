@@ -1,6 +1,6 @@
 import os
 import pendulum
-from dlt_pipeline.test_airflow import test_func
+from dlt_pipeline.extract_to_gcs import run_pipeline
 
 from airflow.decorators import dag, task
 
@@ -13,24 +13,38 @@ from airflow.decorators import dag, task
 )
 def met_museum_dag():
     """Dag definition"""
+
     @task
-    def python_envs():
+    def extract_load_data():
         """
-        Python task
+        Run dlt pipeline to extract data from metropolitan 
+        museum API and load it into GCS bucket.
         """
-        # return f"GCP PROJECT: {os.environ["GCP_PROJECT_ID"]}"
-        return test_func()
+        run_pipeline()
+
     @task.bash
-    def bash_envs():
+    def create_external_table():
         """
-        Bash task
+        Trigger dbt command to create an external table in BiqQuery
+        based on data stored in GCS bucket.
         """
-        # return "env | sort"
-        return "pwd"
+        return r'''dbt run-operation stage_external_sources \
+            --vars "ext_full_refresh: true" \
+            --project-dir ${DBT_HOME} \
+            --profiles-dir ${DBT_HOME}
+        '''
     
-    # python_task = python_envs()
-    # bash_task = bash_envs()
-    # python_task >> bash_task
-    python_envs() >> bash_envs()
+    @task.bash
+    def transform_data():
+        """
+        Trigger dbt command to run data transformations in BigQuery.
+        """
+        return r'''dbt run \
+            --project-dir ${DBT_HOME} \
+            --profiles-dir ${DBT_HOME}
+        '''
+
+    extract_load_data() >> create_external_table() >> transform_data()
+
 
 met_museum_dag()

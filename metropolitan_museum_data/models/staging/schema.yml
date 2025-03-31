@@ -1,0 +1,30 @@
+version: 1
+
+sources:
+  - name: external
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    schema: "{{ env_var('BQ_DATASET_NAME') }}"
+    tables:
+      - name: met_artworks_external
+        description: >
+            External table for metropolitan museum data.
+            Data is stored as parquet files in GCS bucket.        
+        external:
+          location: "gs://{{ env_var('GCS_BUCKET_NAME') }}"
+          options:
+            format: PARQUET
+            uris: ["gs://{{ env_var('GCS_BUCKET_NAME') }}/{{ env_var('BQ_DATASET_NAME') }}/met_artworks/*"]
+
+
+models:
+    - name: stg_met_data
+      description: >
+        Model with raw metropolitan museum data.
+      columns:
+        - name: object_id
+          description: Identifying number for each artwork
+          tests:
+              - unique:
+                  severity: warn
+              - not_null:
+                  severity: warn

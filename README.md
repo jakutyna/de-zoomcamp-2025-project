@@ -168,7 +168,7 @@ To trigger the DAG click on the "play" icon on the right side of the page. Run d
 
 ![Airflow Tasks](./images/airflow_tasks.png)
 
-In the DAG details click "Graph" tab to see the tasks lineage graphs. The run is considered successfully finished once all the squares indicating each of the DAG's tasks are flashing green. Logs for each task can be reviewed in "Logs" tab.
+In the DAG details click "Graph" tab to see the tasks lineage graphs. The run is considered successfully finished once all the squares indicating each of the DAG's tasks are flashing green. Logs for each task can be reviewed in "Logs" tab after clicking on a specific task.
 
 __NOTE: The API used in this project requires a seperate API call for each extracted object. This results in the extract/load process being quite slow (20 minutes or more).__
 

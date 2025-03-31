@@ -8,7 +8,7 @@ from dlt.sources.helpers.rest_client import RESTClient
 def run_pipeline():
     """Run dlt pipeline to extract metropolitan museum data"""
 
-    DAYS_OFFSET = 1  # TODO: change to 14 default
+    DAYS_OFFSET = 14  # Change this value to limit the number of API calls
     metadata_date = date.today() - timedelta(days=DAYS_OFFSET)
 
     # Set up secrects
@@ -40,9 +40,7 @@ def run_pipeline():
         )
         # Pull ids of most recent museum objects
         response = client.get("/objects", params={"metadataDate": metadata_date})
-        object_ids = response.json()["objectIDs"][
-            :100
-        ]  # TODO: REMOVE SLICE AFTER TESTING
+        object_ids = response.json()["objectIDs"]
 
         # TODO: Add logger
         print(f"Pulled ids of {len(object_ids)} museum artworks.")

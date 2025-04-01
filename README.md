@@ -136,6 +136,12 @@ terraform -chdir=./terraform apply
 
 Airflow image is based on the configuration in [docker-compose.yaml](docker-compose.yaml) and a custom [Dockerfile](Dockerfile). Both files were created following this guide: [Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html).
 
+__Note: On Linux systems an additional command need to be run (see [Setting the right Airflow user](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html#setting-the-right-airflow-user)):__
+
+```sh
+echo -e "AIRFLOW_UID=$(id -u)" > .env
+```
+
 Run the following commands to run Airflow service locally:
 
 - Build a custom Airflow image:

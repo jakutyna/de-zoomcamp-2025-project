@@ -15,4 +15,5 @@ COPY --chown=airflow:root gcp_credentials/service_account.json ${GOOGLE_APPLICAT
 
 RUN dbt deps \
     --project-dir ${DBT_HOME} \
-    --profiles-dir ${DBT_HOME}
+    --profiles-dir ${DBT_HOME} && \
+    chmod -R 777 ${DBT_HOME}
